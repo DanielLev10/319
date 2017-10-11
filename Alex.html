@@ -1,0 +1,27 @@
+
+
+<html>
+<head>
+    <title>Hangman Game</title>
+    <link rel="stylesheet" type="text/css" href="page2.css">
+    
+</head>
+<body>
+<div class="guess">
+		<p id="demo">"hello"</p>
+  </div>
+   <input name="newword" type="button" value="New Word" onClick="chooseWord()">
+    <div class='input-area'>
+          <input id='letter-input' type='text' maxlength='1'placeholder="Enter a letter . . . &#x23ce;"/>
+        </div>
+	<div  class="biliboard">
+  <button type="button"  class="biliboard" onClick="guessIn()">Guess</button>
+  </div>
+  <div class="wrong">
+	<p id="false">false</p>
+	</div>
+
+</body>
+<script src="play.js"></script>
+
+</html>
