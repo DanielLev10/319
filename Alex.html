@@ -1,3 +1,4 @@
+<script src="http://static.smallpicture.com/bootstrap/js/jquery-1.9.1.min.js"></script>
 
 
 <html>
@@ -6,6 +7,108 @@
     <link rel="stylesheet" type="text/css" href="page2.css">
     
 </head>
+<script>
+var words = ['cat', 'tree', 'bang'];
+var word="test";
+var selected = "";
+var hiddenBlank = "";
+var ans = "";
+var wrong = "";
+var counter = 0;
+var wins=false;
+var goodSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/goodbell.mp3");
+var badSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/bad.mp3");
+var winSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/win.mp3");
+var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lose.mp3");
+
+function chooseWord () {
+    selected = words[Math.floor(Math.random() * words.length)];
+	word=selected;
+	hiddenBlank = hider(selected);
+	ans = selected;
+	counter = 0;
+    document.getElementById("demo").innerHTML = hiddenBlank;
+	alert(word);
+}
+
+function hider (wordy)
+{
+	var under = "";
+	for (var i = 0; i < wordy.length; i++){
+		under = under + "-";
+	}
+	return under;
+}
+
+function right()
+{
+}
+
+function wrong()
+{
+}
+
+function guessIn()
+{
+	 var guessChar = document.getElementById("letter-input").value;
+	 document.getElementById("letter-input").value = "";
+	 guessChar = guessChar.toLowerCase();
+	 //guessed a correct letter
+	 if(selected.indexOf(guessChar) > -1)
+	 {
+	 while(selected.indexOf(guessChar) > -1)
+	 {
+		 var indy = selected.indexOf(guessChar);
+		hiddenBlank = hiddenBlank.substr(0,indy) + guessChar + hiddenBlank.substr(indy+1, hiddenBlank.length);
+		selected = selected.substr(0, indy) + '~' + selected.substr(indy+1, selected.length);
+		document.getElementById("demo").innerHTML = hiddenBlank;
+  }
+  goodSound.play();
+	}
+	 else{
+	 //wrong letter
+	 wrong = wrong + guessChar;
+	 document.getElementById("false").innerHTML = wrong;
+   badSound.play();
+	 }
+	 if(ans === hiddenBlank)
+	 {
+	 wins=true;
+     winSound.play();
+     document.getElementById("false").innerHTML ="you won!!!";
+		 chooseWord ();
+	 }
+
+
+
+
+}
+
+
+function doKeypress () {
+    var tempChar = $('#letter-input').val().toLowerCase();
+    var tempString = "";
+    $('#letter-input').val("");
+
+    // Write here!
+    tempString = guessLetter( tempChar, gameShownAnswer, gameAnswer );
+    if ( tempString != gameShownAnswer ) {
+        updateWord( tempString );
+        gameShownAnswer = tempString;
+        if ( gameShownAnswer === gameAnswer ) {
+            win();
+        }
+    } else {
+        wrongLetter(tempChar);
+        drawSequence[ hangmanState++ ]();
+        if ( hangmanState === drawSequence.length ) {
+            lose();
+        }
+    }
+	alert("kepress");
+}
+
+</script>
 <body>
 <div class="guess">
 		<p id="demo">"hello"</p>
@@ -19,9 +122,56 @@
   </div>
   <div class="wrong">
 	<p id="false">false</p>
+		
 	</div>
 
 </body>
-<script src="play.js"></script>
+<script>
+			var baseUrl = "http://api.wordnik.com/v4/word.json/";
+			var apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
+			function getSynonyms (theWord, callback) {
+				var url = baseUrl + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + apiKey;
+				var jxhr = $.ajax ({ 
+					url: url,
+					dataType: "text" , 
+					timeout: 30000 
+					}) 
+				.success (function (data, status) { 
+					var array = JSON.parse (data);
+					console.log (data);
+					callback (array [0].words)
+					}) 
+				.error (function (status) { 
+					console.log ("getSynonyms: url == " + url + ", error == " + JSON.stringify (status, undefined, 4));
+					});
+				}
+			</script>
+<body>
+<div class="divPage">
+			
+			<p>Here are the synonyms for word:</p>
+			<div id="idSynonymList"></div>
+			
+			</div>
+</body>
+
+			
+			
+
+<script>
+
+			getSynonyms (word, function (words) {
+				var s = "";
+				for (var i = 0; i < words.length; i++) {
+					s += "<li>" + words [i] + "</li>"
+					}
+				$("#idSynonymList").html ("<ul>" + s + "</ul>");
+				});
+				
+			</script>
+
+
+
+
 
 </html>
