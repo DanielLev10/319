@@ -153,23 +153,31 @@ function doKeypress () {
 
 </script>
 <body>
+
 <div class="guess">
-		<p id="demo">"hello"</p>
+<br/>
+
+		<p class="dash" id="demo">"hello"</p>
   </div>
-   <input name="newword" type="button" value="New Word" onClick="chooseWord()">
-    <div class='input-area'>
-          <input id='letter-input' type='text' maxlength='1'placeholder="Enter a letter . . . &#x23ce;"/>
-        </div>
-	<div  class="biliboard">
-  <button type="button"  class="biliboard" onClick="guessIn()">Guess</button>
+  <div style="text-align:center;">
+   <input name="newword" class="newW" style="text-align:center;" type="button" value="New Word" onClick="chooseWord()">
+   </div>
+    <div class='input-area'style="text-align:center;">
+	<br />
+          <input id='letter-input' class="inny" type='text' maxlength='1'placeholder="Enter a letter . . . &#x23ce;"/>
+
+  <button type="button"  class="biliboard2" onClick="guessIn()">Guess</button>
+  </div>
   <p> </p>
-   <p> </p>
-   <p> Hint gives you synonyms for the word you're guessing</p>
-  <button type="button"  onClick="call()">Hint</button>
+      <p class="synWord" id="synWord"> Hint gives you synonyms for the word you're guessing</p>
+   <div class="syn" style="text-align:center;">
+  <button type="button" class="syn2" onClick="call()">Hint</button>
+  </div>
   
   </div>
   <div class="wrong">
-	<p id="false"> false</p>
+  <p class="wrong1" id="wrong1">Guessed Letters:</p>
+	<p class="wrong" id="false"> false</p>
 		
 	</div>
 
@@ -177,7 +185,7 @@ function doKeypress () {
 <body>
 <div class="divPage">
 			
-			<p>Here are the synonyms for word:</p>
+			<p class="api" >Here are the synonyms for word:</p>
 			<div id="idSynonymList"></div>
 			
 			</div>
