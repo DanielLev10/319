@@ -94,4 +94,10 @@ function doKeypress () {
     }
 	alert("kepress");
 }
-$('#letter-input').keyup( doKeypress );
+//$('#letter-input').keyup( doKeypress );
+
+
+
+			document.getElementById(element)="test";
+			
+			

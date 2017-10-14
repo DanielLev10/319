@@ -1,0 +1,36 @@
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<input type="file" name="file" id="file">
+<button type="button"  onClick="call()">Hint</button>
+<div id="page-wrapper">
+
+		<h1>Text File Reader</h1>
+		
+	
+	<script>
+	var lines;
+document.getElementById('file').onchange = function(){
+
+  var file = this.files[0];
+
+  var reader = new FileReader();
+  reader.onload = function(progressEvent){
+    // Entire file
+    
+
+    // By lines
+    lines = this.result.split('\n');
+    for(var line = 0; line < lines.length; line++){
+      console.log(lines[line]);
+	
+    }
+  };
+  
+  reader.readAsText(file);
+};
+function call()
+{
+alert(lines[0]);
+}
+	</script>

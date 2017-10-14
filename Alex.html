@@ -8,7 +8,7 @@
     
 </head>
 <script>
-var words = ['cat', 'tree', 'bang'];
+var wordz = ['cat', 'tree', 'bang'];
 var word="test";
 var selected = "";
 var hiddenBlank = "";
@@ -21,13 +21,41 @@ var badSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/bad
 var winSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/win.mp3");
 var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lose.mp3");
 
+//readTextFile("C:\Users\daniel\Documents\319\Portfolio1\myOutput.txt");
+
+	
+	
+	
+	
+	var baseUrl = "http://api.wordnik.com/v4/word.json/";
+			var apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
+			function getSynonyms (theWord, callback) {
+				var url = baseUrl + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + apiKey;
+				var jxhr = $.ajax ({ 
+					url: url,
+					dataType: "text" , 
+					timeout: 30000 
+					}) 
+				.success (function (data, status) { 
+					var array = JSON.parse (data);
+					console.log (data);
+					callback (array [0].words)
+					}) 
+				.error (function (status) { 
+					console.log ("getSynonyms: url == " + url + ", error == " + JSON.stringify (status, undefined, 4));
+					});
+				}
+
+
+
 function chooseWord () {
-    selected = words[Math.floor(Math.random() * words.length)];
+    selected = wordz[Math.floor(Math.random() * wordz.length)];
 	word=selected;
 	hiddenBlank = hider(selected);
 	ans = selected;
 	counter = 0;
     document.getElementById("demo").innerHTML = hiddenBlank;
+	//document.getElementById("false").innerHTML ="";
 	alert(word);
 }
 
@@ -73,17 +101,32 @@ function guessIn()
 	 }
 	 if(ans === hiddenBlank)
 	 {
-	 wins=true;
+	 
      winSound.play();
      document.getElementById("false").innerHTML ="you won!!!";
-		 chooseWord ();
+		 //chooseWord ();
+		 window.setTimeout(chooseWord(), 3000);
+		 wins=true;
+		 
 	 }
 
+	 
+	 
 
 
 
 }
-
+function call()
+{
+	getSynonyms (word, function (words) {
+				var s = "";
+				for (var i = 0; i < words.length; i++) {
+					s += "<li>" + words [i] + "</li>"
+					}
+				$("#idSynonymList").html ("<ul>" + s + "</ul>");
+				});
+				
+}
 
 function doKeypress () {
     var tempChar = $('#letter-input').val().toLowerCase();
@@ -119,33 +162,18 @@ function doKeypress () {
         </div>
 	<div  class="biliboard">
   <button type="button"  class="biliboard" onClick="guessIn()">Guess</button>
+  <p> </p>
+   <p> </p>
+   <p> Hint gives you synonyms for the word you're guessing</p>
+  <button type="button"  onClick="call()">Hint</button>
+  
   </div>
   <div class="wrong">
-	<p id="false">false</p>
+	<p id="false"> false</p>
 		
 	</div>
 
 </body>
-<script>
-			var baseUrl = "http://api.wordnik.com/v4/word.json/";
-			var apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
-			function getSynonyms (theWord, callback) {
-				var url = baseUrl + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + apiKey;
-				var jxhr = $.ajax ({ 
-					url: url,
-					dataType: "text" , 
-					timeout: 30000 
-					}) 
-				.success (function (data, status) { 
-					var array = JSON.parse (data);
-					console.log (data);
-					callback (array [0].words)
-					}) 
-				.error (function (status) { 
-					console.log ("getSynonyms: url == " + url + ", error == " + JSON.stringify (status, undefined, 4));
-					});
-				}
-			</script>
 <body>
 <div class="divPage">
 			
@@ -155,20 +183,12 @@ function doKeypress () {
 			</div>
 </body>
 
+
+
 			
 			
 
-<script>
 
-			getSynonyms (word, function (words) {
-				var s = "";
-				for (var i = 0; i < words.length; i++) {
-					s += "<li>" + words [i] + "</li>"
-					}
-				$("#idSynonymList").html ("<ul>" + s + "</ul>");
-				});
-				
-			</script>
 
 
 

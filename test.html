@@ -1,0 +1,47 @@
+<html>
+	<head>
+			<button>Generate </button>
+			<button type="button"  onClick="generate()">Guess</button>
+<script>
+var api = 'http://api.wordnik.com/v4/words.json/randomWord';
+var key = 'a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5';
+
+var corpus = 1000; // higher = less complex words
+var def = true; // only words with definitions ?
+
+function getWord(type, c) {
+    return $.get(
+        api + 
+        '?includePartOfSpeech=' + type +
+        '&hasDictionaryDef=' + def +
+        '&minCorpusCount=' + corpus + 
+        '&api_key=' + key
+    );    
+}
+
+function link(res) {
+    var w = res[0].word;
+    var upper = w.charAt(0).toUpperCase() + w.slice(1);
+    
+    return '<a target = "_blank" href="https://www.wordnik.com/words/' 
+        + w.toLowerCase() + '">' + upper + '</a>';
+}
+
+function generate() {
+    $.when(getWord('noun'), getWord('adjective'), getWord('noun'))
+    .then(function(a, b, c) {
+        var sentence = 
+            link(a) + ' <small>of the</small> ' + 
+            link(b) + ' ' + link(c);
+        $('h1').html(sentence);
+    })
+    .fail(function() { alert('ERROR'); });
+}
+
+generate();
+$('button').click(generate)
+
+</script>
+<button>Generate</button>
+</head>
+</html>
