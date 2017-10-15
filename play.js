@@ -3,21 +3,19 @@ var words = ['cat', 'tree', 'eagan'];
 var selected = "";
 var hiddenBlank = "";
 var ans = "";
-var wrong = null;
+var wrong = "";
 var counter = 0;
 var goodSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/goodbell.mp3");
 var badSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/bad.mp3");
 var winSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/win.mp3");
 var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lose.mp3");
 
-function chooseWord() {
+function chooseWord () {
     selected = words[Math.floor(Math.random() * words.length)];
 	hiddenBlank = hider(selected);
 	ans = selected;
 	counter = 0;
     document.getElementById("demo").innerHTML = hiddenBlank;
-	wrong = "hi";
-	document.getElementById("false").innerHTML = wrong;
 
 }
 
@@ -34,7 +32,7 @@ function right()
 {
 }
 
-function wrong2()
+function wrong()
 {
 }
 
@@ -63,14 +61,10 @@ function guessIn()
 	 }
 	 if(ans === hiddenBlank)
 	 {
-	 wrong = "you wonnnnnnn";
      winSound.play();
-     document.getElementById("false").innerHTML = wrong;
-	 wrong = "";
-	 chooseWord();
-		 
+     document.getElementById("false").innerHTML ="you won!!!";
+		 chooseWord ();
 	 }
-
 
 
 
