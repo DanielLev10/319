@@ -98,6 +98,5 @@ function doKeypress () {
 
 
 
-			document.getElementById(element)="test";
 			
 			
