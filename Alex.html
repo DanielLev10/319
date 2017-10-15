@@ -1,5 +1,4 @@
-<script src="http://static.smallpicture.com/bootstrap/js/jquery-1.9.1.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <html>
 <head>
@@ -8,7 +7,7 @@
     
 </head>
 <script>
-var wordz = ['cat', 'tree', 'bang'];
+var wordz ;
 var word="test";
 var selected = "";
 var hiddenBlank = "";
@@ -49,7 +48,7 @@ var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lo
 
 
 function chooseWord () {
-    selected = wordz[Math.floor(Math.random() * wordz.length)];
+    selected = wordz[Math.floor(Math.random() * 100)];
 	word=selected;
 	hiddenBlank = hider(selected);
 	ans = selected;
@@ -197,6 +196,38 @@ function doKeypress () {
 			
 
 
+
+<input type="file" name="file" id="file">
+<button type="button"  onClick="call()">Hint</button>
+<div id="page-wrapper">
+
+		<h1>Text File Reader</h1>
+		
+	
+	<script>
+	var wordz;
+document.getElementById('file').onchange = function(){
+
+  var file = this.files[0];
+
+  var reader = new FileReader();
+  reader.onload = function(progressEvent){
+    // Entire file
+    
+
+    // By wordz
+    wordz = this.result.split('\n');
+    for(var line = 0; line < wordz.length; line++){
+      console.log(wordz[line]);
+	
+    }
+  };
+  
+  reader.readAsText(file);
+};
+
+
+	</script>
 
 
 

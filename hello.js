@@ -1,5 +1,5 @@
 var randomWords = require('random-words');
-var rando= randomWords(5);
+var rando= randomWords(100);
 console.log(rando);
 var fs = require('fs');
 var wstream = fs.createWriteStream('myOutput.txt');
