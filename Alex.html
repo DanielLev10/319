@@ -26,11 +26,11 @@ var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lo
 	
 	
 	
-	var baseUrl = "http://api.wordnik.com/v4/word.json/";
-			var apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
+			var Url = "http://api.wordnik.com/v4/word.json/";
+			var Key = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
 			function getSynonyms (theWord, callback) {
-				var url = baseUrl + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + apiKey;
-				var jxhr = $.ajax ({ 
+				var url = Url + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + Key;
+				var js = $.ajax ({ 
 					url: url,
 					dataType: "text" , 
 					timeout: 30000 
@@ -54,10 +54,10 @@ function chooseWord () {
 	hiddenBlank = hider(selected);
 	ans = selected;
 	counter = 0;
-	wrong = "";
+	wrong="";
     document.getElementById("demo").innerHTML = hiddenBlank;
 	//document.getElementById("false").innerHTML ="";
-	alert(word);
+	alert(word+"!");
 }
 
 function hider (wordy)
@@ -158,7 +158,7 @@ function doKeypress () {
 <div class="guess">
 <br/>
 
-		<p class="dash" id="demo">Please select a text file to use as the word bank   →</p>
+		<p class="dash" id="demo">"hello"</p>
   </div>
   <div style="text-align:center;">
    <input name="newword" class="newW" style="text-align:center;" type="button" value="New Word" onClick="chooseWord()">
@@ -178,7 +178,7 @@ function doKeypress () {
   </div>
   <div class="wrong">
   <p class="wrong1" id="wrong1">Guessed Letters:</p>
-	<p class="wrong" id="false"></p>
+	<p class="wrong" id="false"> false</p>
 		
 	</div>
 
@@ -187,7 +187,7 @@ function doKeypress () {
 <div class="divPage">
 			
 			<p class="api" >Here are the synonyms for word:</p>
-			<div class="slist" id="idSynonymList"></div>
+			<div id="idSynonymList"></div>
 			
 			</div>
 </body>
@@ -199,10 +199,11 @@ function doKeypress () {
 
 
 
-<input type="file" class="file3" name="file" id="file"></input>
-<button type="button" class="hinty" onClick="call()">Hint</button>
+<input type="file" name="file" id="file">
+<button type="button"  onClick="call()">Hint</button>
 <div id="page-wrapper">
 
+		<h1>Text File Reader</h1>
 		
 	
 	<script>
