@@ -49,15 +49,14 @@ var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lo
 
 function chooseWord () {
     selected = wordz[Math.floor(Math.random() * 100)];
-	selected = selected.substr(0, selected.length - 1);
+	
 	word=selected;
 	hiddenBlank = hider(selected);
 	ans = selected;
 	counter = 0;
-	wrong="";
     document.getElementById("demo").innerHTML = hiddenBlank;
 	//document.getElementById("false").innerHTML ="";
-	alert(word+"!");
+	alert(word);
 }
 
 function hider (wordy)
@@ -178,7 +177,7 @@ function doKeypress () {
   </div>
   <div class="wrong">
   <p class="wrong1" id="wrong1">Guessed Letters:</p>
-	<p class="wrong" id="false"> false</p>
+	<p class="wrong" id="false"></p>
 		
 	</div>
 
@@ -187,7 +186,7 @@ function doKeypress () {
 <div class="divPage">
 			
 			<p class="api" >Here are the synonyms for word:</p>
-			<div id="idSynonymList"></div>
+			<div class="slist" id="idSynonymList"></div>
 			
 			</div>
 </body>
@@ -199,11 +198,10 @@ function doKeypress () {
 
 
 
-<input type="file" name="file" id="file">
-<button type="button"  onClick="call()">Hint</button>
+<input type="file" class="file3" name="file" id="file"></input>
+<button type="button" class="hinty" onClick="call()">Hint</button>
 <div id="page-wrapper">
 
-		<h1>Text File Reader</h1>
 		
 	
 	<script>
