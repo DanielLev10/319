@@ -1,0 +1,237 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<html>
+<head>
+    <title>Hangman Game</title>
+    <link rel="stylesheet" type="text/css" href="page2.css">
+    
+</head>
+<script>
+var wordz ;
+var word="test";
+var selected = "";
+var hiddenBlank = "";
+var ans = "";
+var wrong = "";
+var counter = 0;
+var wins=false;
+var goodSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/goodbell.mp3");
+var badSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/bad.mp3");
+var winSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/win.mp3");
+var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lose.mp3");
+
+//readTextFile("C:\Users\daniel\Documents\319\Portfolio1\myOutput.txt");
+
+	
+	
+	
+	
+	var baseUrl = "http://api.wordnik.com/v4/word.json/";
+			var apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
+			function getSynonyms (theWord, callback) {
+				var url = baseUrl + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + apiKey;
+				var jxhr = $.ajax ({ 
+					url: url,
+					dataType: "text" , 
+					timeout: 30000 
+					}) 
+				.success (function (data, status) { 
+					var array = JSON.parse (data);
+					console.log (data);
+					callback (array [0].words)
+					}) 
+				.error (function (status) { 
+					console.log ("getSynonyms: url == " + url + ", error == " + JSON.stringify (status, undefined, 4));
+					});
+				}
+
+
+
+function chooseWord () {
+    selected = wordz[Math.floor(Math.random() * 100)];
+	selected = selected.substr(0, selected.length - 1);
+	word=selected;
+	hiddenBlank = hider(selected);
+	ans = selected;
+	counter = 0;
+	wrong = "";
+    document.getElementById("demo").innerHTML = hiddenBlank;
+	//document.getElementById("false").innerHTML ="";
+	
+}
+
+function hider (wordy)
+{
+	var under = "";
+	for (var i = 0; i < wordy.length; i++){
+		under = under + "-";
+	}
+	return under;
+}
+
+function right()
+{
+}
+
+function wrong()
+{
+}
+
+function guessIn()
+{
+	 var guessChar = document.getElementById("letter-input").value;
+	 document.getElementById("letter-input").value = "";
+	 guessChar = guessChar.toLowerCase();
+	 //guessed a correct letter
+	 if(selected.indexOf(guessChar) > -1)
+	 {
+	 while(selected.indexOf(guessChar) > -1)
+	 {
+		 var indy = selected.indexOf(guessChar);
+		hiddenBlank = hiddenBlank.substr(0,indy) + guessChar + hiddenBlank.substr(indy+1, hiddenBlank.length);
+		selected = selected.substr(0, indy) + '~' + selected.substr(indy+1, selected.length);
+		document.getElementById("demo").innerHTML = hiddenBlank;
+  }
+  goodSound.play();
+	}
+	 else{
+	 //wrong letter
+	 wrong = wrong + guessChar;
+	 document.getElementById("false").innerHTML = wrong;
+   badSound.play();
+	 }
+	 if(ans === hiddenBlank)
+	 {
+	 
+     winSound.play();
+     document.getElementById("false").innerHTML ="you won!!!";
+		 //chooseWord ();
+		 window.setTimeout(chooseWord(), 3000);
+		 wins=true;
+		 
+	 }
+
+	 
+	 
+
+
+
+}
+function call()
+{
+	getSynonyms (word, function (words) {
+				var s = "";
+				for (var i = 0; i < words.length; i++) {
+					s += "<li>" + words [i] + "</li>"
+					}
+				$("#idSynonymList").html ("<ul>" + s + "</ul>");
+				});
+				
+}
+
+function doKeypress () {
+    var tempChar = $('#letter-input').val().toLowerCase();
+    var tempString = "";
+    $('#letter-input').val("");
+
+    // Write here!
+    tempString = guessLetter( tempChar, gameShownAnswer, gameAnswer );
+    if ( tempString != gameShownAnswer ) {
+        updateWord( tempString );
+        gameShownAnswer = tempString;
+        if ( gameShownAnswer === gameAnswer ) {
+            win();
+        }
+    } else {
+        wrongLetter(tempChar);
+        drawSequence[ hangmanState++ ]();
+        if ( hangmanState === drawSequence.length ) {
+            lose();
+        }
+    }
+	alert("kepress");
+}
+
+</script>
+<body>
+
+<div class="guess">
+<br/>
+
+		<p class="dash" id="demo">Please select a text file to use as the word bank   →</p>
+  </div>
+  <div style="text-align:center;">
+   <input name="newword" class="newW" style="text-align:center;" type="button" value="New Word" onClick="chooseWord()">
+   </div>
+    <div class='input-area'style="text-align:center;">
+	<br />
+          <input id='letter-input' class="inny" type='text' maxlength='1'placeholder="Enter a letter . . . &#x23ce;"/>
+
+  <button type="button"  class="biliboard2" onClick="guessIn()">Guess</button>
+  </div>
+  <p> </p>
+      <p class="synWord" id="synWord"> Hint gives you synonyms for the word you're guessing</p>
+   <div class="syn" style="text-align:center;">
+  <button type="button" class="syn2" onClick="call()">Hint</button>
+  </div>
+  
+  </div>
+  <div class="wrong">
+  <p class="wrong1" id="wrong1">Guessed Letters:</p>
+	<p class="wrong" id="false"></p>
+		
+	</div>
+
+</body>
+<body>
+<div class="divPage">
+			
+			<p class="api" >Here are the synonyms for word:</p>
+			<div class="slist" id="idSynonymList"></div>
+			
+			</div>
+</body>
+
+
+
+			
+			
+
+
+
+<input type="file" class="file3" name="file" id="file"></input>
+<button type="button" class="hinty" onClick="call()">Hint</button>
+<div id="page-wrapper">
+
+		
+	
+	<script>
+	var wordz;
+document.getElementById('file').onchange = function(){
+
+  var file = this.files[0];
+
+  var reader = new FileReader();
+  reader.onload = function(progressEvent){
+    // Entire file
+    
+
+    // By wordz
+    wordz = this.result.split('\n');
+    for(var line = 0; line < wordz.length; line++){
+      console.log(wordz[line]);
+	
+    }
+  };
+  
+  reader.readAsText(file);
+};
+
+
+	</script>
+
+
+
+
+
+</html>
