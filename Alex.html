@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Hangman Game</title>
+    <title>COMS 319 Portfolio1 P13</title>
     <link rel="stylesheet" type="text/css" href="page2.css">
     
 </head>
@@ -57,7 +57,6 @@ function chooseWord () {
 	wrong = "";
     document.getElementById("demo").innerHTML = hiddenBlank;
 	//document.getElementById("false").innerHTML ="";
-	alert(word);
 }
 
 function hider (wordy)
@@ -129,28 +128,7 @@ function call()
 				
 }
 
-function doKeypress () {
-    var tempChar = $('#letter-input').val().toLowerCase();
-    var tempString = "";
-    $('#letter-input').val("");
 
-    // Write here!
-    tempString = guessLetter( tempChar, gameShownAnswer, gameAnswer );
-    if ( tempString != gameShownAnswer ) {
-        updateWord( tempString );
-        gameShownAnswer = tempString;
-        if ( gameShownAnswer === gameAnswer ) {
-            win();
-        }
-    } else {
-        wrongLetter(tempChar);
-        drawSequence[ hangmanState++ ]();
-        if ( hangmanState === drawSequence.length ) {
-            lose();
-        }
-    }
-	alert("kepress");
-}
 
 </script>
 <body>
