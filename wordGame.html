@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>COMS 319 Portfolio1 P13</title>
+    <title>Hangman Game</title>
     <link rel="stylesheet" type="text/css" href="page2.css">
     
 </head>
@@ -26,11 +26,11 @@ var loseSound = new Audio("https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/lo
 	
 	
 	
-			var Url = "http://api.wordnik.com/v4/word.json/";
-			var Key = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
+	var baseUrl = "http://api.wordnik.com/v4/word.json/";
+			var apiKey = "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; //demo key from developer.wordnik.com
 			function getSynonyms (theWord, callback) {
-				var url = Url + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + Key;
-				var js = $.ajax ({ 
+				var url = baseUrl + theWord + "/relatedWords?useCanonical=true&relationshipTypes=synonym&limitPerRelationshipType=100&api_key=" + apiKey;
+				var jxhr = $.ajax ({ 
 					url: url,
 					dataType: "text" , 
 					timeout: 30000 
@@ -54,13 +54,10 @@ function chooseWord () {
 	hiddenBlank = hider(selected);
 	ans = selected;
 	counter = 0;
-	wrong="";
+	wrong = "";
     document.getElementById("demo").innerHTML = hiddenBlank;
 	//document.getElementById("false").innerHTML ="";
-<<<<<<< HEAD
-=======
-	alert(word+"!");
->>>>>>> 9b190e84530b17e820831f4c1757941767a63af9
+	
 }
 
 function hider (wordy)
@@ -132,7 +129,28 @@ function call()
 				
 }
 
+function doKeypress () {
+    var tempChar = $('#letter-input').val().toLowerCase();
+    var tempString = "";
+    $('#letter-input').val("");
 
+    // Write here!
+    tempString = guessLetter( tempChar, gameShownAnswer, gameAnswer );
+    if ( tempString != gameShownAnswer ) {
+        updateWord( tempString );
+        gameShownAnswer = tempString;
+        if ( gameShownAnswer === gameAnswer ) {
+            win();
+        }
+    } else {
+        wrongLetter(tempChar);
+        drawSequence[ hangmanState++ ]();
+        if ( hangmanState === drawSequence.length ) {
+            lose();
+        }
+    }
+	alert("kepress");
+}
 
 </script>
 <body>
@@ -140,7 +158,7 @@ function call()
 <div class="guess">
 <br/>
 
-		<p class="dash" id="demo">"hello"</p>
+		<p class="dash" id="demo">Please select a text file to use as the word bank   →</p>
   </div>
   <div style="text-align:center;">
    <input name="newword" class="newW" style="text-align:center;" type="button" value="New Word" onClick="chooseWord()">
@@ -160,7 +178,7 @@ function call()
   </div>
   <div class="wrong">
   <p class="wrong1" id="wrong1">Guessed Letters:</p>
-	<p class="wrong" id="false"> false</p>
+	<p class="wrong" id="false"></p>
 		
 	</div>
 
@@ -169,7 +187,7 @@ function call()
 <div class="divPage">
 			
 			<p class="api" >Here are the synonyms for word:</p>
-			<div id="idSynonymList"></div>
+			<div class="slist" id="idSynonymList"></div>
 			
 			</div>
 </body>
@@ -181,11 +199,10 @@ function call()
 
 
 
-<input type="file" name="file" id="file">
-<button type="button"  onClick="call()">Hint</button>
+<input type="file" class="file3" name="file" id="file"></input>
+<button type="button" class="hinty" onClick="call()">Hint</button>
 <div id="page-wrapper">
 
-		<h1>Text File Reader</h1>
 		
 	
 	<script>
